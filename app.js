@@ -1,37 +1,59 @@
-// Importing modules
+// Import modules
 import PDFDocument from "pdfkit";
 import fs from "fs";
 
-// Create a document
-const doc = new PDFDocument();
+const xHelloWorldCoordinate = 200;
+const yHelloWorldCoordinate = 300;
 
-// Saving the pdf file in root directory.
-doc.pipe(fs.createWriteStream("example.pdf"));
+// Create a document
+const document = new PDFDocument();
+
+// Saving the PDF file in root directory.
+document.pipe(fs.createWriteStream("example.pdf"));
 
 // Adding functionality
-doc.fontSize(27).text("Hello world!", 200, 300);
+document
+  .fontSize(27)
+  .text("Hello world!", xHelloWorldCoordinate, yHelloWorldCoordinate);
 
-// Adding an image in the pdf.
+const imageHeight = 300;
 
-doc.image("svinka_v_ochkah.jpg", {
-	fit: [300, 300],
-	align: "center",
-	valign: "center",
+// Adding an image in the PDF.
+document.image("pig_with_glasses.jpg", {
+  fit: [imageHeight, imageHeight],
+  align: "center",
+  valign: "center",
 });
 
-doc.addPage().fontSize(15).text("Generating PDF with the help of pdfkit", 100, 100);
+const textCoordinates = 100;
+const fontSize = 15;
 
-// Apply some transforms and render an SVG path with the
-// 'even-odd' fill rule
-doc.scale(0.6).translate(470, -380).path("M 250,75 L 323,301 131,161 369,161 177,301 z").fill("red", "even-odd").restore();
+document
+  .addPage()
+  .fontSize(fontSize)
+  .text(
+    "Generating PDF with the help of pdfkit",
+    textCoordinates,
+    textCoordinates
+  );
 
 // Add some text with annotations
-doc
-	.addPage()
-	.fillColor("blue")
-	.text("The link for GeeksforGeeks website", 100, 100)
 
-	.link(100, 100, 160, 27, "https://www.geeksforgeeks.org/");
+const linkHeight = 27;
+const linkWidth = 160;
+
+document
+  .addPage()
+  .fillColor("red")
+  .text("The link for AlexCode website", textCoordinates, textCoordinates)
+
+  .link(
+    textCoordinates,
+    textCoordinates,
+    linkWidth,
+    linkHeight,
+    "https://alex-code.com/"
+  );
 
 // Finalize PDF file
-doc.end();
+document.end();
