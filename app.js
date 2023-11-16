@@ -1,3 +1,3 @@
-import { generatePDF } from "./generatePDF.js";
+import generatePDF from "./generatePDF.js";
 
 generatePDF();

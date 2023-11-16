@@ -1,44 +1,28 @@
-// Import modules
 import PDFDocument from "pdfkit";
 import fs from "fs";
 
-export const generatePDF = () => {
-  const xHelloWorldCoordinate = 200;
-  const yHelloWorldCoordinate = 300;
-
-  // Create a document
+const generatePDF = () => {
   const document = new PDFDocument();
 
-  // Saving the PDF file in root directory.
   document.pipe(fs.createWriteStream("example.pdf"));
 
-  // Adding functionality
-  document
-    .fontSize(27)
-    .text("Hello world!", xHelloWorldCoordinate, yHelloWorldCoordinate);
+  const textPadding = 100;
+  const fontSize = 15;
+
+  document.fontSize(fontSize).text("Hello world!", textPadding, textPadding);
 
   const imageHeight = 300;
 
-  // Adding an image in the PDF.
-  document.image("pig_with_glasses.jpg", {
+  document.image("pigWithGlasses.jpg", {
     fit: [imageHeight, imageHeight],
     align: "center",
     valign: "center",
   });
 
-  const textCoordinates = 100;
-  const fontSize = 15;
-
   document
     .addPage()
     .fontSize(fontSize)
-    .text(
-      "Generating PDF with the help of pdfkit",
-      textCoordinates,
-      textCoordinates
-    );
-
-  // Add some text with annotations
+    .text("Generating PDF with the help of pdfkit", textPadding, textPadding);
 
   const linkHeight = 27;
   const linkWidth = 160;
@@ -46,16 +30,16 @@ export const generatePDF = () => {
   document
     .addPage()
     .fillColor("red")
-    .text("The link for AlexCode website", textCoordinates, textCoordinates)
-
+    .text("The link for AlexCode website", textPadding, textPadding)
     .link(
-      textCoordinates,
-      textCoordinates,
+      textPadding,
+      textPadding,
       linkWidth,
       linkHeight,
       "https://alex-code.com/"
     );
 
-  // Finalize PDF file
   document.end();
 };
+
+export default generatePDF;
